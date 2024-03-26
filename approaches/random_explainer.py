@@ -1,5 +1,5 @@
 import numpy as np
-from utils.Explanation import AttributionExplanation
+from utils.explanation import AttributionExplanation
 
 
 class RandomExplainer:

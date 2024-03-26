@@ -1,7 +1,7 @@
 import lime
 import numpy as np
 from utils.helper_functions import rank_list
-from utils.Explanation import AttributionExplanation
+from utils.explanation import AttributionExplanation
 
 
 class AggregatedLime:

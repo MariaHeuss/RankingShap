@@ -2,7 +2,7 @@ import numpy as np
 from utils.helper_functions import rank_list
 from scipy.stats import kendalltau
 from functools import partial
-from utils.Explanation import AttributionExplanation
+from utils.explanation import AttributionExplanation
 import lime
 import random
 import pandas as pd

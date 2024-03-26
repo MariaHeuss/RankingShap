@@ -3,13 +3,13 @@ from utils.helper_functions import get_data
 import lightgbm
 import numpy as np
 from scipy.stats import kendalltau
-from utils.BackgroundData import BackgroundData
-from approaches.RankingSHAP import RankingShap
-from approaches.RankingLime import RankingLIME
-from approaches.GreedyListwise import GreedyListwise
-from approaches.PointwiseLime import AggregatedLime
-from approaches.PointwiseSHAP import AggregatedShap
-from approaches.RandomExplainer import RandomExplainer
+from utils.background_data import BackgroundData
+from approaches.ranking_shap import RankingShap
+from approaches.ranking_lime import RankingLIME
+from approaches.greedy_listwise import GreedyListwise
+from approaches.pointwise_lime import AggregatedLime
+from approaches.pointwise_shap import AggregatedShap
+from approaches.random_explainer import RandomExplainer
 
 import argparse
 

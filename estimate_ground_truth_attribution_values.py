@@ -1,8 +1,8 @@
 from utils.get_explanations import calculate_all_query_explanations
 from utils.helper_functions import get_data
 import lightgbm
-from utils.BackgroundData import BackgroundData
-from approaches.RankingSHAP import RankingShap
+from utils.background_data import BackgroundData
+from approaches.ranking_shap import RankingShap
 from scipy.stats import kendalltau
 import pandas as pd
 

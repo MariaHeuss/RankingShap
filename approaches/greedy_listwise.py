@@ -1,6 +1,6 @@
 import numpy as np
 from evaluation.evaluate_explanations import calculate_validity_completeness
-from utils.Explanation import SelectionExplanation, AttributionExplanation
+from utils.explanation import SelectionExplanation, AttributionExplanation
 
 
 class GreedyListwise:

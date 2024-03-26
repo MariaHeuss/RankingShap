@@ -1,7 +1,7 @@
 import lightgbm
 import pandas as pd
 from utils.helper_functions import get_data
-from utils.BackgroundData import BackgroundData
+from utils.background_data import BackgroundData
 import numpy as np
 import argparse
 

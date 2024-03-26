@@ -4,7 +4,7 @@ from scipy.stats import kendalltau
 import pandas as pd
 from functools import partial
 from shap.utils._legacy import convert_to_model
-from utils.Explanation import AttributionExplanation, SelectionExplanation
+from utils.explanation import AttributionExplanation, SelectionExplanation
 from utils.helper_functions import rank_list
 
 
