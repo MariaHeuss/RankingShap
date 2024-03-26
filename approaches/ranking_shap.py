@@ -23,7 +23,7 @@ def new_model_predict_val(
     original_model_predict,
     query_features,
     similarity_coefficient=lambda x, y: kendalltau(x, y)[0],
-    mixed_type_input=False
+    mixed_type_input=False,
 ):
     # Determine ranking for current query
     pred = original_model_predict(query_features)

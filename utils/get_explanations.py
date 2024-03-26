@@ -62,7 +62,9 @@ def calculate_all_query_explanations(
         experiment_results = experiment_results.set_index(
             ["query_number", "feature_number"]
         )
-        experiment_results.to_csv(Path(str(path_to_attribute_values).split(".")[0] + "_eval.csv"))
+        experiment_results.to_csv(
+            Path(str(path_to_attribute_values).split(".")[0] + "_eval.csv")
+        )
 
     prepare_for_eval(safe_attributions_to)
     return

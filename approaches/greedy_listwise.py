@@ -85,7 +85,7 @@ class GreedyListwise:
                     self.model,
                     used_features,
                     background_data=self.background_data,
-                    mixed_type_input=self.mixed_type_input
+                    mixed_type_input=self.mixed_type_input,
                 )
 
                 feature_attribution_explanation[feature] = (

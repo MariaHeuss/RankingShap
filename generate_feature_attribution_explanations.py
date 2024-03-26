@@ -73,7 +73,9 @@ path_to_attribution_folder = Path("results/results_" + dataset + "/feature_attri
 num_features = len(test_data[0][0])
 
 background_data = BackgroundData(
-    np.load(Path("results/background_data_files/train_background_data_" + dataset + ".npy")),
+    np.load(
+        Path("results/background_data_files/train_background_data_" + dataset + ".npy")
+    ),
     summarization_type=None,
 )
 
@@ -153,13 +155,9 @@ if dataset == "MQ2008":
 
 for exp in explainers:
     if test:
-        path_to_attribute_values = (
-             path_to_attribution_folder / (exp.name + "_test.csv")
-        )
+        path_to_attribute_values = path_to_attribution_folder / (exp.name + "_test.csv")
     else:
-        path_to_attribute_values = (
-            path_to_attribution_folder / (exp.name + ".csv")
-        )
+        path_to_attribute_values = path_to_attribution_folder / (exp.name + ".csv")
 
     print("Starting", exp.name, flush=True)
     print("Target csv will be ", path_to_attribute_values, flush=True)

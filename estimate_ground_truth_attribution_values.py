@@ -106,20 +106,12 @@ for i in range(experiment_iterations):
     )
 
     if args.test:
-        path_to_attribute_values = (
-            path_to_attribution_folder / (
-             ground_truth_explainer.name
-            + "_"
-            + str(i)
-            + "_test.csv")
+        path_to_attribute_values = path_to_attribution_folder / (
+            ground_truth_explainer.name + "_" + str(i) + "_test.csv"
         )
     else:
-        path_to_attribute_values = (
-            path_to_attribution_folder / (
-             ground_truth_explainer.name
-            + "_"
-            + str(i)
-            + ".csv")
+        path_to_attribute_values = path_to_attribution_folder / (
+            ground_truth_explainer.name + "_" + str(i) + ".csv"
         )
 
     print("Starting iteration ", i, flush=True)
@@ -151,16 +143,12 @@ stds = attributes.groupby(["query_number", "feature_number"])["attribution_value
 ground_truth_attributes = pd.DataFrame({"attribution_value": means, "std": stds})
 
 if args.test:
-    path_to_attribute_values = (
-        path_to_attribution_folder / (
-          ground_truth_explainer.name
-        + "_means_test.csv")
+    path_to_attribute_values = path_to_attribution_folder / (
+        ground_truth_explainer.name + "_means_test.csv"
     )
 else:
-    path_to_attribute_values = (
-        path_to_attribution_folder / (
-         ground_truth_explainer.name
-        + "_means.csv")
+    path_to_attribute_values = path_to_attribution_folder / (
+        ground_truth_explainer.name + "_means.csv"
     )
 
 ground_truth_attributes.reset_index().to_csv(path_to_attribute_values)

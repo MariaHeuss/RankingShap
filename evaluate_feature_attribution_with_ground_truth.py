@@ -34,7 +34,6 @@ path_to_attribution_folder = Path("results/results_" + dataset + "/feature_attri
 path_to_ground_truth_attributes = path_to_attribution_folder / file_name_ground_truth
 
 
-
 approaches = [
     "rankingshap",
     "greedy_iter",
@@ -51,9 +50,10 @@ if args.test:
 eval_df = []
 
 
-
 for approach in approaches:
-    path_to_attribute_values = path_to_attribution_folder / (approach + "_eval" + ".csv")
+    path_to_attribute_values = path_to_attribution_folder / (
+        approach + "_eval" + ".csv"
+    )
 
     attribution_evaluation_per_query = eval_feature_attribution(
         attributes_to_evaluate=path_to_attribute_values,
