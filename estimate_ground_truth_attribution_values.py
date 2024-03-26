@@ -87,7 +87,7 @@ for i in range(experiment_iterations):
     ground_truth_explainer = RankingShap(
         permutation_sampler="sampling",
         background_data=background_data.background_summary,
-        original_model=model,
+        original_model=model.predict,
         explanation_size=explanation_size,
         name="feature_importance_approxiation_"
         + "_backgroundcount_"

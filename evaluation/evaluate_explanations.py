@@ -11,14 +11,14 @@ def calculate_validity_completeness(
     explanation,
     background_data,
     rank_similarity_coefficient=lambda x, y: kendalltau(x, y)[0],
-    use_pandas_where=False,
+    mixed_type_input=False,
 ):
     feature_set = np.arange(len(query_features[0]))
     num_features = len(feature_set)
     # Determine mask templates, both for validity and completeness
     mask = np.array([i in explanation for i in range(num_features)])
 
-    if use_pandas_where:
+    if mixed_type_input:
         # For mixed type arrays we need to use pandas.where but for efficiency we want to use np.array...
         # Use (the same) mask on feature vectors of each document
         val_vectors = np.array(
@@ -62,14 +62,9 @@ def calculate_validity_completeness(
         )
 
     # Predict ranking scores with and without applied masks
-    try:
-        pred = model.predict(query_features)
-        val_preds = [model.predict(vectors) for vectors in val_vectors]
-        comp_preds = [model.predict(vectors) for vectors in comp_vectors]
-    except:
-        pred = model(query_features)
-        val_preds = [model(vectors) for vectors in val_vectors]
-        comp_preds = [model(vectors) for vectors in comp_vectors]
+    pred = model(query_features)
+    val_preds = [model(vectors) for vectors in val_vectors]
+    comp_preds = [model(vectors) for vectors in comp_vectors]
 
     val_scores = [
         rank_similarity_coefficient(rank_list(val_pred), rank_list(pred))

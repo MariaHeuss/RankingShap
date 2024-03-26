@@ -11,7 +11,7 @@ class GreedyListwise:
         explanation_size=3,
         name="",
         feature_attribution_method="iter",
-        use_pandas=False,
+        mixed_type_input=False,
     ):
         self.background_data = background_data
         self.explanation_size = explanation_size
@@ -21,7 +21,7 @@ class GreedyListwise:
         self.model = model
         self.original_model = model
         self.feature_attribution_method = feature_attribution_method
-        self.use_pandas = use_pandas
+        self.mixed_type_input = mixed_type_input
 
     def get_query_explanation(self, query_features, query_id=""):
         feature_set = np.arange(len(query_features[0]))
@@ -41,7 +41,7 @@ class GreedyListwise:
                     self.model,
                     used_fs,
                     background_data=self.background_data,
-                    use_pandas_where=self.use_pandas,
+                    mixed_type_input=self.mixed_type_input,
                 )
 
                 # we chose f with the maximal score:
@@ -85,6 +85,7 @@ class GreedyListwise:
                     self.model,
                     used_features,
                     background_data=self.background_data,
+                    mixed_type_input=self.mixed_type_input
                 )
 
                 feature_attribution_explanation[feature] = (
@@ -99,6 +100,7 @@ class GreedyListwise:
                 self.model,
                 feature_selection_explanation,
                 background_data=self.background_data,
+                mixed_type_input=self.mixed_type_input,
             )
 
             for feature in feature_selection_explanation:
@@ -110,6 +112,7 @@ class GreedyListwise:
                         self.model,
                         f,
                         background_data=self.background_data,
+                        mixed_type_input=self.mixed_type_input,
                     )
                 )
                 feature_attribution_explanation[feature] = (

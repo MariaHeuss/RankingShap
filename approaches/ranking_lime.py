@@ -33,10 +33,7 @@ def new_model_predict_lime(
         # Determine ranking for adjusted document feature vectors
         new_pred = original_model_predict(features_background_sample)
         new_rank = rank_list(new_pred)
-        try:
-            scores.append(similarity_coefficient(og_rank, new_rank)[0])
-        except:
-            scores.append(similarity_coefficient(og_rank, new_rank))
+        scores.append(similarity_coefficient(og_rank, new_rank))
 
     return np.array(scores)
 
@@ -59,10 +56,7 @@ def new_model_predict_lime_individual_masking(
         # Determine ranking for adjusted document feature vectors
         new_pred = original_model_predict(features_background_sample)
         new_rank = rank_list(new_pred)
-        try:
-            scores.append(similarity_coefficient(og_rank, new_rank)[0])
-        except:
-            scores.append(similarity_coefficient(og_rank, new_rank))
+        scores.append(similarity_coefficient(og_rank, new_rank))
 
     return np.array(scores)
 
@@ -103,18 +97,11 @@ class RankingLIME:
                 similarity_coefficient=rank_similarity_coefficient,
             )
         else:
-            try:
-                self.new_model_predict = partial(
-                    new_model_predict_lime_individual_masking,
-                    original_model_predict=original_model.predict,
-                    similarity_coefficient=rank_similarity_coefficient,
-                )
-            except:
-                self.new_model_predict = partial(
-                    new_model_predict_lime_individual_masking,
-                    original_model_predict=original_model,
-                    similarity_coefficient=rank_similarity_coefficient,
-                )
+            self.new_model_predict = partial(
+                new_model_predict_lime_individual_masking,
+                original_model_predict=original_model,
+                similarity_coefficient=rank_similarity_coefficient,
+            )
         self.feature_attribution_explanation = None
         self.feature_selection_explanation = None
 

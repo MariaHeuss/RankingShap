@@ -26,28 +26,18 @@ class AggregatedLime:
         )
 
         # pick the top ranked document for aggregation of feature importance
-        try:
-            pred = self.model.predict(query_features)
-        except:
-            pred = self.model(query_features)
+        pred = self.model(query_features)
         og_rank = rank_list(pred)
 
         # Get aggregated importance of each feature for first few (aggregate_over_top) documents
         exp_dict = {i: 0 for i in range(1, self.num_features + 1)}
         for j in range(1, min(self.aggregate_over_top + 1, len(og_rank))):
             best_doc_ind = np.where(og_rank == j)[0][0]
-            try:
-                exp = lime_explainer.explain_instance(
-                    query_features[best_doc_ind],
-                    self.model.predict,
-                    num_features=feature_amount,
-                )
-            except:
-                exp = lime_explainer.explain_instance(
-                    query_features[best_doc_ind],
-                    self.model,
-                    num_features=feature_amount,
-                )
+            exp = lime_explainer.explain_instance(
+                query_features[best_doc_ind],
+                self.model,
+                num_features=feature_amount,
+            )
             exp_dict = {
                 feature: exp_dict.get(feature, 0) + value
                 for feature, value in exp.local_exp[0]

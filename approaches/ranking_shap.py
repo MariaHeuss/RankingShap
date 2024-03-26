@@ -23,17 +23,18 @@ def new_model_predict_val(
     original_model_predict,
     query_features,
     similarity_coefficient=lambda x, y: kendalltau(x, y)[0],
+    mixed_type_input=False
 ):
     # Determine ranking for current query
     pred = original_model_predict(query_features)
     og_rank = rank_list(pred)
 
     # Adjust feature vectors: substitute not None features for all candidate documents with background/0 value
-    try:
+    if not mixed_type_input:
         adjusted_features = np.array(
             [[np.where(pd.isna(a), doc, a) for doc in query_features] for a in array]
         )
-    except:
+    else:
         adjusted_features = np.array(
             [
                 [pd.Series(doc).where(pd.isna(a), a).values for doc in query_features]
@@ -46,11 +47,7 @@ def new_model_predict_val(
         # Determine ranking for adjusted document feature vectors
         new_pred = original_model_predict(features_background_sample)
         new_rank = rank_list(new_pred)
-        try:
-            scores.append(similarity_coefficient(og_rank, new_rank)[0])
-        except:
-            scores.append(similarity_coefficient(og_rank, new_rank))
-
+        scores.append(similarity_coefficient(og_rank, new_rank))
     return np.array(scores)
 
 
@@ -80,18 +77,11 @@ class RankingShap:
 
         self.explainer = self.get_explainer()
         self.rank_similarity_coefficient = rank_similarity_coefficient
-        try:
-            self.new_model_predict = partial(
-                new_model_predict_val,
-                original_model_predict=original_model.predict,
-                similarity_coefficient=rank_similarity_coefficient,
-            )
-        except:
-            self.new_model_predict = partial(
-                new_model_predict_val,
-                original_model_predict=original_model,
-                similarity_coefficient=rank_similarity_coefficient,
-            )
+        self.new_model_predict = partial(
+            new_model_predict_val,
+            original_model_predict=original_model,
+            similarity_coefficient=rank_similarity_coefficient,
+        )
         self.feature_attribution_explanation = None
         self.feature_selection_explanation = None
 

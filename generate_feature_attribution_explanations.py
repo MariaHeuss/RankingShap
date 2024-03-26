@@ -46,12 +46,6 @@ test = args.test
 
 # We assume that the model has been trained and saved in a model file
 model_file = args.model_file
-#
-# dataset = "MQ2008"
-# experiment_iteration = 1
-# n_samples = 2 ** 10
-# test = True
-# model_file = 'test'
 
 model = lightgbm.Booster(model_file="results/model_files/" + model_file)
 
@@ -90,7 +84,7 @@ rank_similarity_coefficient = lambda x, y: kendalltau(x, y)[0]
 ranking_shap_explainer = RankingShap(
     permutation_sampler="kernel",
     background_data=background_data.background_summary,
-    original_model=model,
+    original_model=model.predict,
     explanation_size=explanation_size,
     name="rankingshap",
     rank_similarity_coefficient=rank_similarity_coefficient,
@@ -99,7 +93,7 @@ ranking_shap_explainer = RankingShap(
 
 greedy_explainer_0_iter = GreedyListwise(
     background_data=background_data.background_summary,
-    model=model,
+    model=model.predict,
     explanation_size=explanation_size,
     name="greedy_iter",
     feature_attribution_method="iter",
@@ -108,7 +102,7 @@ greedy_explainer_0_iter = GreedyListwise(
 
 greedy_explainer_0_full = GreedyListwise(
     background_data=background_data.background_summary,
-    model=model,
+    model=model.predict,
     explanation_size=num_features,
     name="greedy_iter_full",
     feature_attribution_method="iter",
@@ -117,7 +111,7 @@ greedy_explainer_0_full = GreedyListwise(
 
 aggregated_lime_explainer = AggregatedLime(
     background_data=background_data.background_summary,
-    model=model,
+    model=model.predict,
     explanation_size=explanation_size,
     name="pointwise_lime",
     aggregate_over_top=5,
@@ -125,7 +119,7 @@ aggregated_lime_explainer = AggregatedLime(
 
 aggregated_shap_explainer = AggregatedShap(
     background_data=background_data.background_summary,
-    model=model,
+    model=model.predict,
     explanation_size=explanation_size,
     name="pointwise_shap",
     aggregate_over_top=5,
@@ -138,7 +132,7 @@ random_explainer = RandomExplainer(
 
 ranking_lime_explainer = RankingLIME(
     background_data=background_data.background_summary,
-    original_model=model,
+    original_model=model.predict,
     explanation_size=explanation_size,
     name="rankinglime",
     rank_similarity_coefficient=rank_similarity_coefficient,

@@ -27,16 +27,8 @@ class AggregatedShap:
             self.background_data, 100
         )  # create summary of background data
 
-        try:
-            shap_explainer = shap.KernelExplainer(
-                self.model.predict, background_summary
-            )
-
-            # pick the top ranked document for aggregation of feature importance
-            pred = self.model.predict(query_features)
-        except:
-            shap_explainer = shap.KernelExplainer(self.model, background_summary)
-            pred = self.model(query_features)
+        shap_explainer = shap.KernelExplainer(self.model, background_summary)
+        pred = self.model(query_features)
 
         og_rank = rank_list(pred)
 
