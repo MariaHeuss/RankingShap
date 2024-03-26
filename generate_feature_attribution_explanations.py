@@ -29,12 +29,6 @@ parser.add_argument(
     help="The dataset to use MQ2008 or MSLR-WEB10K",
 )
 parser.add_argument(
-    "--nsamples",
-    required=True,
-    type=int,
-    help="Number background, permutation pairs to use (log2)",
-)
-parser.add_argument(
     "--experiment_iteration",
     required=True,
     type=int,
@@ -48,7 +42,6 @@ print(args, flush=True)
 
 dataset = args.dataset
 experiment_iteration = args.experiment_iteration
-n_samples = 2**args.nsamples
 test = args.test
 
 # We assume that the model has been trained and saved in a model file
