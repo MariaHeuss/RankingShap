@@ -64,8 +64,8 @@ def test_rank_based_on_column_per_query():
     assert list(data_frame.ranked.values) == [1, 2, 3, 3, 2, 1]
 
 
-def get_data(path_to_data):
-    with open(path_to_data) as evalfile:
+def get_data(data_file):
+    with open(data_file) as evalfile:
         EX, Ey, Eqids, _ = read_dataset(evalfile)
     return EX, Ey, Eqids
 

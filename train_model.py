@@ -4,6 +4,8 @@ from utils.helper_functions import get_data
 from utils.background_data import BackgroundData
 import numpy as np
 import argparse
+from pathlib import Path
+
 
 parser = argparse.ArgumentParser(description="Your script description")
 
@@ -111,14 +113,15 @@ def train_model(
 
 
 # Get train, eval_data
-train_data = get_data(path_to_data="data/" + dataset + "/Fold1/train.txt")
-eval_data = get_data(path_to_data="data/" + dataset + "/Fold1/vali.txt")
+data_directory = Path("data/" + dataset + "/Fold1/")
+train_data = get_data(data_file=data_directory / "train.txt")
+eval_data = get_data(data_file=data_directory / "vali.txt")
 
 model = train_model(
     train_data=train_data,
     eval_data=eval_data,
     ranking_model_type=model_type,
-    save_to_file="results/model_files/" + file_name,
+    save_to_file=Path("results/model_files/" + file_name),
 )
 
 # Prepare background data training:
@@ -126,6 +129,6 @@ background_data = BackgroundData(
     train_data[0], summarization_type="random_sample", summary_length=background_samples
 )
 np.save(
-    "results/background_data_files/train_background_data_" + dataset + ".npy",
+    Path("results/background_data_files/train_background_data_" + dataset + ".npy"),
     background_data.background_summary,
 )

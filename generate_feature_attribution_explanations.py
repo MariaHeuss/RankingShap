@@ -10,6 +10,7 @@ from approaches.greedy_listwise import GreedyListwise
 from approaches.pointwise_lime import AggregatedLime
 from approaches.pointwise_shap import AggregatedShap
 from approaches.random_explainer import RandomExplainer
+from pathlib import Path
 
 import argparse
 
@@ -47,7 +48,9 @@ test = args.test
 # We assume that the model has been trained and saved in a model file
 model_file = args.model_file
 
-model = lightgbm.Booster(model_file="results/model_files/" + model_file)
+model = lightgbm.Booster(
+    model_file=(str((Path("results/model_files/") / model_file).absolute()))
+)
 
 
 explanation_size = 5
@@ -60,21 +63,17 @@ else:
     num_queries_eval = None
 
 # Get train, eval_data
-train_data = get_data(path_to_data="data/" + dataset + "/Fold1/train.txt")
-test_data = get_data(path_to_data="data/" + dataset + "/Fold1/test.txt")
-eval_data = get_data(path_to_data="data/" + dataset + "/Fold1/vali.txt")
+data_directory = Path("data/" + dataset + "/Fold1/")
+train_data = get_data(data_file=data_directory / "train.txt")
+test_data = get_data(data_file=data_directory / "test.txt")
+eval_data = get_data(data_file=data_directory / "vali.txt")
 
-path_to_estimated_feature_importance = (
-    "results/results_"
-    + dataset
-    + "/feature_attributes/"
-    + "attribution_values_for_evaluation.csv"
-)
+path_to_attribution_folder = Path("results/results_" + dataset + "/feature_attributes/")
 
 num_features = len(test_data[0][0])
 
 background_data = BackgroundData(
-    np.load("results/background_data_files/train_background_data_" + dataset + ".npy"),
+    np.load(Path("results/background_data_files/train_background_data_" + dataset + ".npy")),
     summarization_type=None,
 )
 
@@ -155,15 +154,11 @@ if dataset == "MQ2008":
 for exp in explainers:
     if test:
         path_to_attribute_values = (
-            "results/results_"
-            + dataset
-            + "/feature_attributes/"
-            + exp.name
-            + "_test.csv"
+             path_to_attribution_folder / (exp.name + "_test.csv")
         )
     else:
         path_to_attribute_values = (
-            "results/results_" + dataset + "/feature_attributes/" + exp.name + ".csv"
+            path_to_attribution_folder / (exp.name + ".csv")
         )
 
     print("Starting", exp.name, flush=True)

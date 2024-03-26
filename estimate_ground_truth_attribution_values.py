@@ -5,6 +5,7 @@ from utils.background_data import BackgroundData
 from approaches.ranking_shap import RankingShap
 from scipy.stats import kendalltau
 import pandas as pd
+from pathlib import Path
 
 
 import argparse
@@ -63,8 +64,9 @@ else:
 progress = False
 
 # Get train, test_data
-train_data = get_data(path_to_data="data/" + dataset + "/Fold1/train.txt")
-test_data = get_data(path_to_data="data/" + dataset + "/Fold1/test.txt")
+data_directory = Path("data/" + dataset + "/Fold1/")
+train_data = get_data(data_file=data_directory / "train.txt")
+test_data = get_data(data_file=data_directory / "test.txt")
 
 num_features = len(test_data[0][0])
 
@@ -72,8 +74,13 @@ rank_similarity_coefficient = lambda x, y: kendalltau(x, y)[0]
 
 
 # We assume that the model has been trained and saved in a model file
-model_file = args.model_file
-model = lightgbm.Booster(model_file="results/model_files/" + model_file)
+model_file = str(args.model_file)
+model_directory = Path("results/model_files/")
+print(model_directory / model_file)
+model = lightgbm.Booster(model_file=str((model_directory / model_file).absolute()))
+
+path_to_attribution_folder = Path("results/results_" + dataset + "/feature_attributes/")
+
 
 attributes = []
 
@@ -100,23 +107,19 @@ for i in range(experiment_iterations):
 
     if args.test:
         path_to_attribute_values = (
-            "results/results_"
-            + dataset
-            + "/feature_attributes/"
-            + ground_truth_explainer.name
+            path_to_attribution_folder / (
+             ground_truth_explainer.name
             + "_"
             + str(i)
-            + "_test.csv"
+            + "_test.csv")
         )
     else:
         path_to_attribute_values = (
-            "results/results_"
-            + dataset
-            + "/feature_attributes/"
-            + ground_truth_explainer.name
+            path_to_attribution_folder / (
+             ground_truth_explainer.name
             + "_"
             + str(i)
-            + ".csv"
+            + ".csv")
         )
 
     print("Starting iteration ", i, flush=True)
@@ -149,19 +152,15 @@ ground_truth_attributes = pd.DataFrame({"attribution_value": means, "std": stds}
 
 if args.test:
     path_to_attribute_values = (
-        "results/results_"
-        + dataset
-        + "/feature_attributes/"
-        + ground_truth_explainer.name
-        + "_means_test.csv"
+        path_to_attribution_folder / (
+          ground_truth_explainer.name
+        + "_means_test.csv")
     )
 else:
     path_to_attribute_values = (
-        "results/results_"
-        + dataset
-        + "/feature_attributes/"
-        + ground_truth_explainer.name
-        + "_means.csv"
+        path_to_attribution_folder / (
+         ground_truth_explainer.name
+        + "_means.csv")
     )
 
 ground_truth_attributes.reset_index().to_csv(path_to_attribute_values)

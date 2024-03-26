@@ -1,5 +1,6 @@
 import pandas as pd
 from evaluation.evaluate_feature_attribution import eval_feature_attribution
+from pathlib import Path
 
 import argparse
 
@@ -28,9 +29,10 @@ print(args, flush=True)
 
 dataset = args.dataset
 file_name_ground_truth = args.file_name_ground_truth
-path_to_ground_truth_attributes = (
-    "results/results_" + dataset + "/feature_attributes/" + file_name_ground_truth
-)
+path_to_attribution_folder = Path("results/results_" + dataset + "/feature_attributes/")
+
+path_to_ground_truth_attributes = path_to_attribution_folder / file_name_ground_truth
+
 
 
 approaches = [
@@ -48,15 +50,10 @@ if args.test:
 
 eval_df = []
 
+
+
 for approach in approaches:
-    path_to_attribute_values = (
-        "results/results_"
-        + dataset
-        + "/feature_attributes/"
-        + approach
-        + "_eval"
-        + ".csv"
-    )
+    path_to_attribute_values = path_to_attribution_folder / (approach + "_eval" + ".csv")
 
     attribution_evaluation_per_query = eval_feature_attribution(
         attributes_to_evaluate=path_to_attribute_values,
