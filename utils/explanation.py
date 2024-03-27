@@ -17,25 +17,13 @@ class AttributionExplanation(Explanation):
 
     def safe_to_file(self, filename):
         print("Writing to ", filename)
-        try:
-            attribute_dataframe = pd.DataFrame(
-                self.explanation, columns=["feature_number", str(self.query)]
+        attribute_dataframe = pd.DataFrame(
+            self.explanation, columns=["feature_number", str(self.query)]
+        )
+        if os.path.isfile(filename):
+            attribute_dataframe = attribute_dataframe.merge(
+                pd.read_csv(filename), how="outer", on="feature_number"
             )
-            if os.path.isfile(filename):
-                attribute_dataframe = attribute_dataframe.merge(
-                    pd.read_csv(filename), how="outer", on="feature_number"
-                )
-        except:
-            attribute_dataframe = pd.DataFrame(
-                self.explanation,
-                columns=["doc_number", "feature_number", str(self.query)],
-            )
-            if os.path.isfile(filename):
-                attribute_dataframe = attribute_dataframe.merge(
-                    pd.read_csv(filename),
-                    how="outer",
-                    on=["doc_number", "feature_number"],
-                )
         attribute_dataframe.to_csv(filename, index=False)
 
     @classmethod

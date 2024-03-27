@@ -170,7 +170,7 @@ class RankingLIME:
         )
         return feature_attributes
 
-    def get_query_explanation(self, query_features, query_id="", mode="mean"):
+    def get_query_explanation(self, query_features, query_id="", mode="mean", sign=-1):
         feature_attribution = self.get_doc_wise_attribution(
             query_features=query_features, query_id=query_id
         ).explanation
@@ -180,6 +180,7 @@ class RankingLIME:
         )
 
         assert mode in ["mean", "max", "min", "meanabs", "maxabs"]
+        feature_attribution["attribution_value"] = feature_attribution["attribution_value"] * sign
         if mode == "mean":
             feature_attribution = feature_attribution.groupby(["feature_number"])[
                 "attribution_value"

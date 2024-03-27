@@ -32,7 +32,7 @@ class AggregatedShap:
 
         og_rank = rank_list(pred)
 
-        exp_dict = {i: 0 for i in range(1, self.num_features + 1)}
+        exp_dict = {i+1: 0 for i in range(self.num_features)}
 
         aggregate_over_top = min(self.aggregate_over_top + 1, len(og_rank))
 
@@ -45,7 +45,7 @@ class AggregatedShap:
             )
             exp_dict = {
                 feature + 1: exp_dict.get(feature + 1, 0) + value
-                for feature, value in enumerate(exp, 1)
+                for feature, value in enumerate(exp)
             }
 
         try:

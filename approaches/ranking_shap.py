@@ -113,7 +113,7 @@ class RankingShap:
             exp = self.explainer(vector_of_nones, nsamples=self.nsamples).values[0]
 
         exp_dict = {
-            i: exp[i] for i in range(len(exp))
+            i + 1: exp[i] for i in range(len(exp))
         }  # We start numbering the features with 1.
 
         exp_dict = sorted(exp_dict.items(), key=lambda item: item[1], reverse=True)
